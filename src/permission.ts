@@ -41,7 +41,7 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
           // Generate accessible routes map based on role
           PermissionModule.GenerateRoutes(roles)
           // Dynamically add accessible routes
-          PermissionModule.dynamicRoutes.forEach(route => {
+          PermissionModule.dynamicRoutes.forEach((route) => {
             router.addRoute(route)
           })
           // Hack: ensure addRoutes is complete
@@ -77,5 +77,5 @@ router.afterEach((to: Route) => {
   NProgress.done()
 
   // set page title
-  document.title = getPageTitle(to.meta.title)
+  document.title = getPageTitle(to?.meta?.title)
 })

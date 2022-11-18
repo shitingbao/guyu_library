@@ -44,7 +44,7 @@ export default class extends Vue {
     const container = (this.$refs.scrollContainer as Vue).$el as HTMLElement
     const containerWidth = container.offsetWidth
     const scrollWrapper = this.scrollWrapper
-    const tagList = this.$parent.$refs.tag as any[]
+    const tagList = this.$parent?.$refs.tag as any[]
 
     let firstTag = null
     let lastTag = null
@@ -61,11 +61,12 @@ export default class extends Vue {
       scrollWrapper.scrollLeft = scrollWrapper.scrollWidth - containerWidth
     } else {
       // find preTag and nextTag
-      const currentIndex = tagList.findIndex(item => item === currentTag)
+      const currentIndex = tagList.findIndex((item) => item === currentTag)
       const prevTag = tagList[currentIndex - 1]
       const nextTag = tagList[currentIndex + 1]
       // the tag's offsetLeft after of nextTag
-      const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagSpacing
+      const afterNextTagOffsetLeft =
+        nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagSpacing
       // the tag's offsetLeft before of prevTag
       const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagSpacing
 

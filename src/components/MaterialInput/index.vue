@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="computedClasses"
-    class="material-input__component"
-  >
+  <div :class="computedClasses" class="material-input__component">
     <div :class="{iconClass: icon}">
       <i
         v-if="icon"
@@ -24,7 +21,7 @@
         @focus="handleFocus"
         @blur="handleBlur"
         @input="handleInput"
-      >
+      />
       <input
         v-if="type === 'url'"
         :id="id"
@@ -40,7 +37,7 @@
         @focus="handleFocus"
         @blur="handleBlur"
         @input="handleInput"
-      >
+      />
       <input
         v-if="type === 'number'"
         :id="id"
@@ -61,7 +58,7 @@
         @focus="handleFocus"
         @blur="handleBlur"
         @input="handleInput"
-      >
+      />
       <input
         v-if="type === 'password'"
         :id="id"
@@ -80,7 +77,7 @@
         @focus="handleFocus"
         @blur="handleBlur"
         @input="handleInput"
-      >
+      />
       <input
         v-if="type === 'tel'"
         :id="id"
@@ -96,7 +93,7 @@
         @focus="handleFocus"
         @blur="handleBlur"
         @input="handleInput"
-      >
+      />
       <input
         v-if="type === 'text'"
         :id="id"
@@ -114,7 +111,7 @@
         @focus="handleFocus"
         @blur="handleBlur"
         @input="handleInput"
-      >
+      />
       <span class="material-input-bar" />
       <label class="material-label">
         <slot />
@@ -131,25 +128,25 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
   name: 'MaterialInput'
 })
 export default class extends Vue {
-  @Prop({ required: true }) private value!: any
-  @Prop({ default: 'text' }) private type!: string
-  @Prop({ default: '' }) private id!: string
-  @Prop({ default: '' }) private icon!: string
-  @Prop({ default: '' }) private name!: string
-  @Prop({ default: '' }) private placeholder!: string
-  @Prop({ default: false }) private readonly!: boolean
-  @Prop({ default: false }) private disabled!: boolean
-  @Prop({ default: true }) private required!: boolean
-  @Prop({ default: 'off' }) private autoComplete!: string
-  @Prop({ default: 0 }) private min!: number | Date
-  @Prop({ default: 10000 }) private max!: number | Date
-  @Prop({ default: 1 }) private step!: number
-  @Prop({ default: 0 }) private minlength!: number
-  @Prop({ default: 20 }) private maxlength!: number
-  @Prop({ default: true }) private validateEvent!: boolean
+  @Prop({ required: true }) private value!: any;
+  @Prop({ default: 'text' }) private type!: string;
+  @Prop({ default: '' }) private id!: string;
+  @Prop({ default: '' }) private icon!: string;
+  @Prop({ default: '' }) private name!: string;
+  @Prop({ default: '' }) private placeholder!: string;
+  @Prop({ default: false }) private readonly!: boolean;
+  @Prop({ default: false }) private disabled!: boolean;
+  @Prop({ default: true }) private required!: boolean;
+  @Prop({ default: 'off' }) private autoComplete!: string;
+  @Prop({ default: 0 }) private min!: number | Date;
+  @Prop({ default: 10000 }) private max!: number | Date;
+  @Prop({ default: 1 }) private step!: number;
+  @Prop({ default: 0 }) private minlength!: number;
+  @Prop({ default: 20 }) private maxlength!: number;
+  @Prop({ default: true }) private validateEvent!: boolean;
 
-  private valueCopy = this.value
-  private focus = false
+  private valueCopy = this.value;
+  private focus = false;
 
   @Watch('value')
   private onValueChange(value: any) {
@@ -174,11 +171,11 @@ export default class extends Vue {
   private handleInput(event: KeyboardEvent) {
     const value = (event.target as HTMLInputElement).value
     this.$emit('input', value)
-    if (this.$parent.$options.name === 'ElFormItem') {
+    if (this.$parent?.$options.name === 'ElFormItem') {
       if (this.validateEvent) {
         // See https://github.com/ElemeFE/element/blob/dev/packages/form/src/form-item.vue#L293
         // eslint-disable-next-line vue/custom-event-name-casing
-        this.$parent.$emit('el.form.change', [value])
+        this.$parent?.$emit('el.form.change', [value])
       }
     }
   }
@@ -191,7 +188,7 @@ export default class extends Vue {
   private handleBlur(event: FocusEvent) {
     this.focus = false
     this.$emit('blur', event)
-    if (this.$parent.$options.name === 'ElFormItem') {
+    if (this.$parent?.$options.name === 'ElFormItem') {
       if (this.validateEvent) {
         // See https://github.com/ElemeFE/element/blob/dev/packages/form/src/form-item.vue#L292
         // eslint-disable-next-line vue/custom-event-name-casing
@@ -217,15 +214,15 @@ $index-has-icon: 30px;
 
 // Theme:
 $color-white: white;
-$color-grey: #9E9E9E;
-$color-grey-light: #E0E0E0;
-$color-blue: #2196F3;
-$color-red: #F44336;
+$color-grey: #9e9e9e;
+$color-grey-light: #e0e0e0;
+$color-blue: #2196f3;
+$color-red: #f44336;
 $color-black: black;
 
 // Base clases:
 %base-bar-pseudo {
-  content: '';
+  content: "";
   height: 1px;
   width: 0;
   bottom: 0;
@@ -235,7 +232,7 @@ $color-black: black;
 
 // Mixins:
 @mixin slided-top() {
-  top: - ($font-size-base + $spacer);
+  top: -($font-size-base + $spacer);
   left: 0;
   font-size: $font-size-base;
   font-weight: $font-weight-bold;

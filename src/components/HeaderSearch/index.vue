@@ -1,14 +1,6 @@
 <template>
-  <div
-    id="header-search"
-    :class="{'show': show}"
-    class="header-search"
-  >
-    <svg-icon
-      class="search-icon"
-      name="search"
-      @click.stop="click"
-    />
+  <div id="header-search" :class="{show: show}" class="header-search">
+    <svg-icon class="search-icon" name="search" @click.stop="click" />
     <el-select
       ref="headerSearchSelect"
       v-model="search"
@@ -24,7 +16,7 @@
         v-for="item in options"
         :key="item.path"
         :value="item"
-        :label="item.meta.title.join(' > ')"
+        :label="item?.meta?.title.join(' > ')"
       />
     </el-select>
   </div>
@@ -43,11 +35,11 @@ import i18n from '@/lang' // Internationalization
   name: 'HeaderSearch'
 })
 export default class extends Vue {
-  private search = ''
-  private show = false
-  private options: RouteConfig[] = []
-  private searchPool: RouteConfig[] = []
-  private fuse?: Fuse<RouteConfig>
+  public search = '';
+  public show = false;
+  public options: RouteConfig[] = [];
+  public searchPool: RouteConfig[] = [];
+  public fuse?: Fuse<RouteConfig>;
 
   get routes() {
     return PermissionModule.routes
@@ -85,21 +77,23 @@ export default class extends Vue {
     this.searchPool = this.generateRoutes(this.routes)
   }
 
-  private click() {
+  public click() {
     this.show = !this.show
     if (this.show) {
-      this.$refs.headerSearchSelect && (this.$refs.headerSearchSelect as HTMLElement).focus()
+      this.$refs.headerSearchSelect &&
+        (this.$refs.headerSearchSelect as HTMLElement).focus()
     }
   }
 
-  private close() {
-    this.$refs.headerSearchSelect && (this.$refs.headerSearchSelect as HTMLElement).blur()
+  public close() {
+    this.$refs.headerSearchSelect &&
+      (this.$refs.headerSearchSelect as HTMLElement).blur()
     this.options = []
     this.show = false
   }
 
-  private change(route: RouteConfig) {
-    this.$router.push(route.path).catch(err => {
+  public change(route: RouteConfig) {
+    this.$router.push(route.path).catch((err) => {
       console.warn(err)
     })
     this.search = ''
@@ -109,26 +103,33 @@ export default class extends Vue {
     })
   }
 
-  private initFuse(list: RouteConfig[]) {
+  public initFuse(list: RouteConfig[]) {
     this.fuse = new Fuse(list, {
       shouldSort: true,
       threshold: 0.4,
       location: 0,
       distance: 100,
       minMatchCharLength: 1,
-      keys: [{
-        name: 'title',
-        weight: 0.7
-      }, {
-        name: 'path',
-        weight: 0.3
-      }]
+      keys: [
+        {
+          name: 'title',
+          weight: 0.7
+        },
+        {
+          name: 'path',
+          weight: 0.3
+        }
+      ]
     })
   }
 
   // Filter out the routes that can be displayed in the sidebar
   // And generate the internationalized title
-  private generateRoutes(routes: RouteConfig[], basePath = '/', prefixTitle: string[] = []) {
+  private generateRoutes(
+    routes: RouteConfig[],
+    basePath = '/',
+    prefixTitle: string[] = []
+  ) {
     let res: RouteConfig[] = []
 
     for (const router of routes) {
@@ -147,7 +148,10 @@ export default class extends Vue {
       if (router.meta && router.meta.title) {
         // generate internationalized title
         const i18ntitle = i18n.t(`route.${router.meta.title}`).toString()
-        data.meta.title = [...data.meta.title, i18ntitle]
+        if (data?.meta?.title) {
+          data.meta.title = [...data?.meta?.title, i18ntitle]
+        }
+
         if (router.redirect !== 'noRedirect') {
           // only push the routes with title
           // special case: need to exclude parent router without redirect
@@ -157,7 +161,11 @@ export default class extends Vue {
 
       // recursive child routes
       if (router.children) {
-        const tempRoutes = this.generateRoutes(router.children, data.path, data.meta.title)
+        const tempRoutes = this.generateRoutes(
+          router.children,
+          data.path,
+          data?.meta?.title
+        )
         if (tempRoutes.length >= 1) {
           res = [...res, ...tempRoutes]
         }
@@ -166,7 +174,7 @@ export default class extends Vue {
     return res
   }
 
-  private querySearch(query: string) {
+  public querySearch(query: string) {
     if (query !== '') {
       if (this.fuse) {
         this.options = this.fuse.search(query).map((result) => result.item)

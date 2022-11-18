@@ -13,7 +13,7 @@
     "mock": "cd mock && ts-node-dev mock-server.ts"
   },
   "dependencies": {
-    "@tinymce/tinymce-vue": "^3.2.6",
+    "@tinymce/tinymce-vue": "3.2.6",
     "@toast-ui/editor": "^2.5.1",
     "axios": "^0.21.1",
     "clipboard": "^2.0.8",
